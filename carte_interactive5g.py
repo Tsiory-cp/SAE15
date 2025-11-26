@@ -1,10 +1,10 @@
 import csv
 import folium
 
-# Nom du fichier CSV (dans le même dossier que le notebook)
+# Nom du fichier CSV (dans le même dossier courant)
 fichier_csv = "experimentations_5G.csv"
 
-# Noms des colonnes (d'après ce que tu as affiché)
+# Le programme va chercher dans le fichier CSV les colonnes 
 col_lat = "Latitude"
 col_lon = "Longitude"
 col_region = "Région"
@@ -14,27 +14,27 @@ col_bande = "Bande de fréquences"
 # Liste pour stocker les points (latitude, longitude, texte du popup)
 liste_points = []
 
-with open(fichier_csv, encoding="cp1252", newline="") as f:
-    lecteur = csv.DictReader(f, delimiter=";")
+with open(fichier_csv, encoding="cp1252", newline="") as f: 
+    lecteur = csv.DictReader(f, delimiter=";")  #lis chaque ligne comme un dictionnaire avec les colonnes comme clés
 
     for ligne in lecteur:
-        # récupération des coordonnées
+        # récupération la latitude et la longitude
         lat_texte = ligne[col_lat].strip()
         lon_texte = ligne[col_lon].strip()
 
         if lat_texte == "" or lon_texte == "":
             continue  # on saute si coordonnée manquante
 
-        lat_texte = lat_texte.replace(",", ".")
+        lat_texte = lat_texte.replace(",", ".") #vu c'est avec python les virgure dans les chiffre son representer sous forme de point donc on remplace les , par des .
         lon_texte = lon_texte.replace(",", ".")
 
         try:
             latitude = float(lat_texte)
-            longitude = float(lon_texte)
+            longitude = float(lon_texte)  #on convertie ca en float 
         except ValueError:
             continue  # on saute si ce n'est pas un nombre
 
-        region = ligne[col_region].strip()
+        region = ligne[col_region].strip()  #on recupere les autre données
         exp = ligne[col_exp].strip()
         bande = ligne[col_bande].strip()
 
@@ -71,3 +71,4 @@ else:
     
 carte.save("carte_exps_5G.html")
 print("Fichier généré : carte_exps_5G.html")
+
